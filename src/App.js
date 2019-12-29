@@ -1,24 +1,23 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import Sidebar from './components/Sidebar';
 
-function App() {
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="flex h-screen bg-center bg-cover" style={{ backgroundImage:`url("https://images.unsplash.com/photo-1536549702260-2fe62b52b09d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2550&q=80")` }}>
+      <section className="flex flex-col justify-between w-2/3 h-full px-24 pt-16 pb-40">
+        <span className="text-2xl font-semibold tracking-wider text-white">weather.app</span>
+        <div className="flex font-semibold leading-none text-white">
+          <span className="text-6xl">62&deg;</span>
+          <div className="px-16">
+            <span className="text-5xl">Cincinnati</span>
+            <span className="block pl-1 text-xl">6:00PM - Wed Jan 1, 2020</span>
+          </div>
+          <span className="self-center text-3xl">Partly Cloudy</span>
+        </div>
+      </section>
+      <section className="w-1/3 h-full">
+        <Sidebar />
+      </section>
     </div>
   );
 }
