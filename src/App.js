@@ -4,7 +4,7 @@ import Sidebar from './components/Sidebar';
 const App = () => {
   return (
     <div className="flex h-screen bg-center bg-cover" style={{ backgroundImage:`url("https://images.unsplash.com/photo-1536549702260-2fe62b52b09d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2550&q=80")` }}>
-      <section className="flex flex-col justify-between w-2/3 h-full px-24 pt-16 pb-40">
+      <section className="flex flex-col justify-between w-2/3 h-full px-24 pt-16 pb-24">
         <span className="text-2xl font-semibold tracking-wider text-white">weather.app</span>
         <div className="flex font-semibold leading-none text-white">
           <span className="text-6xl">62&deg;</span>
