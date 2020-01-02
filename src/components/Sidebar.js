@@ -4,70 +4,58 @@ class Sidebar extends React.Component {
 	constructor() {
 		super();
 		this.state = {
-			
+			currentLocation: null
 		}
+	}
+	changeLocation = (e) => {
+		this.setState({ currentLocation: e.target.value });
 	}
 	render() {
 		return (
-		<div className="h-full px-24 pt-16 overflow-y-scroll bg-gray-900 opacity-75">
-			<div className="relative flex items-center border-b border-b-2 border-gray-500">
-				<input className="z-10 w-full py-1 pl-8 mr-3 text-lg leading-tight text-white bg-transparent border-none appearance-none focus:outline-none" type="text" placeholder="Location" aria-label="Location" />
+		<div className="h-full px-24 pt-16 overflow-y-scroll" style={{ backgroundColor: 'rgba(26, 32, 44, 0.75)' }}>
+			<div className="relative flex items-center pb-2 border-b border-b-2 border-gray-500">
+				<input className="z-10 w-full py-1 pl-8 mr-3 text-lg leading-tight text-white bg-transparent border-none appearance-none focus:outline-none" onChange={ this.changeLocation } value={ this.props.location ? this.props.location : '' } type="text" placeholder="Location" aria-label="Location" />
 				<div className="absolute inset-0 flex items-center">
-					<svg className="w-6 h-6 text-white fill-current"><path d="M16.32 14.9l5.39 5.4a1 1 0 01-1.42 1.4l-5.38-5.38a8 8 0 111.41-1.41zM10 16a6 6 0 100-12 6 6 0 000 12z" /></svg>
+					<svg className="w-8 h-8 text-white fill-current"><path d="M16.32 14.9l5.39 5.4a1 1 0 01-1.42 1.4l-5.38-5.38a8 8 0 111.41-1.41zM10 16a6 6 0 100-12 6 6 0 000 12z" /></svg>
 				</div>
 			</div>
 			<span className="block pt-8 pb-3 text-3xl font-semibold text-white">Today</span>
-			<div className="">
-				<div class="flex justify-between">
+			<div>
+				<div className="flex justify-between">
 					<span className="block pt-8 text-lg text-white">Description</span>
-					<span className="block pt-8 text-lg text-white">Partly Cloudy</span>
+					<span className="block pt-8 text-lg text-white">{ this.props.weatherData ? this.props.weatherData.daily.data[0].summary : '...' }</span>
 				</div>
-				<div class="flex justify-between">
+				<div className="flex justify-between">
 					<span className="block pt-12 text-lg text-white">Precipitation</span>
-					<span className="block pt-12 text-lg text-white">62%</span>
+					<span className="block pt-12 text-lg text-white">{ this.props.weatherData ? this.props.weatherData.daily.data[0].precipProbability + '%' : '...' }</span>
 				</div>
-				<div class="flex justify-between">
+				<div className="flex justify-between">
 					<span className="block pt-12 text-lg text-white">Humidity</span>
-					<span className="block pt-12 text-lg text-white">92%</span>
+					<span className="block pt-12 text-lg text-white">{ this.props.weatherData ? this.props.weatherData.daily.data[0].humidity : '...' }</span>
 				</div>
-				<div class="flex justify-between">
+				<div className="flex justify-between">
 					<span className="block pt-12 text-lg text-white">High / Low</span>
-					<span className="block pt-12 text-lg text-white">63&deg; / 42&deg;</span>
+					<span className="block pt-12 text-lg text-white">{ this.props.weatherData ? this.props.weatherData.daily.data[0].temperatureHigh.toFixed() + '° / ' + this.props.weatherData.daily.data[0].temperatureLow.toFixed() + '°'  : '...' }</span>
 				</div>
-				<div class="flex justify-between">
+				<div className="flex justify-between">
 					<span className="block pt-12 text-lg text-white">Wind</span>
-					<span className="block pt-12 text-lg text-white">S 18 mph</span>
+					<span className="block pt-12 text-lg text-white">{ this.props.weatherData ? this.props.weatherData.daily.data[0].windSpeed.toFixed() + ' mph' : '...' }</span>
 				</div>
 			</div>
 			<div className="py-12">
 				<span className="block pb-3 text-3xl font-semibold text-white">7 Day</span>
-				<div class="flex justify-between">
-					<span className="block pt-8 text-lg text-white">Sunday</span>
-					<span className="block pt-8 text-lg text-white">42&deg;</span>
+				<div className="h-48 bg-gray-700 rounded">
+
 				</div>
-				<div class="flex justify-between">
-					<span className="block pt-8 text-lg text-white">Monday</span>
-					<span className="block pt-8 text-lg text-white">39&deg;</span>
+				<div className="flex pt-5">
+					<div className="w-1/3 h-48 bg-gray-700 rounded"></div>
+					<div className="w-1/3 h-48 mx-4 bg-gray-700 rounded"></div>
+					<div className="w-1/3 h-48 bg-gray-700 rounded"></div>
 				</div>
-				<div class="flex justify-between">
-					<span className="block pt-8 text-lg text-white">Tuesday</span>
-					<span className="block pt-8 text-lg text-white">31&deg;</span>
-				</div>
-				<div class="flex justify-between">
-					<span className="block pt-8 text-lg text-white">Wednesday</span>
-					<span className="block pt-8 text-lg text-white">51&deg;</span>
-				</div>
-				<div class="flex justify-between">
-					<span className="block pt-8 text-lg text-white">Thursday</span>
-					<span className="block pt-8 text-lg text-white">61&deg;</span>
-				</div>
-				<div class="flex justify-between">
-					<span className="block pt-8 text-lg text-white">Friday</span>
-					<span className="block pt-8 text-lg text-white">64&deg;</span>
-				</div>
-				<div class="flex justify-between">
-					<span className="block pt-8 text-lg text-white">Saturday</span>
-					<span className="block pt-8 text-lg text-white">50&deg;</span>
+				<div className="flex pt-3">
+					<div className="w-1/3 h-48 bg-gray-700 rounded"></div>
+					<div className="w-1/3 h-48 mx-4 bg-gray-700 rounded"></div>
+					<div className="w-1/3 h-48 bg-gray-700 rounded"></div>
 				</div>
 			</div>
 		</div>
