@@ -1,25 +1,28 @@
 import React from 'react';
 
 class Sidebar extends React.Component {
-	constructor() {
-		super();
+	constructor(props) {
+		super(props);
 		this.state = {
-			currentLocation: null
+			location: ''
 		}
 	}
+	componentWillReceiveProps(newProps) {
+		this.setState({ location: newProps.location });
+	}
 	changeLocation = (e) => {
-		this.setState({ currentLocation: e.target.value });
+		this.setState({ location: e.target.value });
 	}
 	render() {
 		return (
 		<div className="h-full px-24 pt-16 overflow-y-scroll" style={{ backgroundColor: 'rgba(26, 32, 44, 0.75)' }}>
 			<div className="relative flex items-center pb-2 border-b border-b-2 border-gray-500">
-				<input className="z-10 w-full py-1 pl-8 mr-3 text-lg leading-tight text-white bg-transparent border-none appearance-none focus:outline-none" onChange={ this.changeLocation } value={ this.props.location ? this.props.location : '' } type="text" placeholder="Location" aria-label="Location" />
+				<input className="z-10 w-full py-1 pl-8 mr-3 text-lg leading-tight text-white bg-transparent border-none appearance-none focus:outline-none" value={ this.state.location } onChange={ this.changeLocation } type="text" placeholder="Location" aria-label="Location" />
 				<div className="absolute inset-0 flex items-center">
 					<svg className="w-8 h-8 text-white fill-current"><path d="M16.32 14.9l5.39 5.4a1 1 0 01-1.42 1.4l-5.38-5.38a8 8 0 111.41-1.41zM10 16a6 6 0 100-12 6 6 0 000 12z" /></svg>
 				</div>
 			</div>
-			<span className="block pt-8 pb-3 text-3xl font-semibold text-white">Today</span>
+			<span onClick={ () => this.props.changeLocation(this.state.location) } className="block pt-8 pb-3 text-3xl font-semibold text-white">Today</span>
 			<div>
 				<div className="flex justify-between">
 					<span className="block pt-8 text-lg text-white">Description</span>

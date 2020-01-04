@@ -8,22 +8,43 @@ class App extends React.Component {
 		super();
 		this.state = {
       weatherData: null,
-      location: null
+      location: ''
 		}
   }
   componentDidMount() {
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => { this.fetchWeatherData(position.coords.latitude, position.coords.longitude) }, (error) => { console.log(error) });
+      navigator.geolocation.getCurrentPosition((position) => { 
+        this.fetchWeatherData(position.coords.latitude, position.coords.longitude);
+        this.fetchLocationData(position.coords.latitude, position.coords.longitude);
+      }, (error) => { 
+        console.log(error) 
+      });
     }
   }
-	fetchWeatherData = (lat, long) => {
-		axios.get(`/forecast/4661e7b286a3ea7974d722fcf62b5ea9/${lat},${long}`)
-			.then((response) => {
-				this.setState({ weatherData: response.data });
+  changeLocation = (loc) => {
+    axios.get(`https://www.mapquestapi.com/geocoding/v1/address?key=iGU4SqMrHyMr2tIFRCu36SkN3n2uUNtj&inFormat=kvp&outFormat=json&location=${loc}&thumbMaps=false`)
+      .then((response) => {
+        this.setState({ location: response.data.results[0].locations[0].adminArea5 });
+        let latLng = response.data.results[0].locations[0].latLng;
+        this.fetchWeatherData(latLng.lat, latLng.lng);
       });
+  }
+  fetchLocationData = (lat, long) => {
     axios.get(`https://www.mapquestapi.com/geocoding/v1/reverse?key=iGU4SqMrHyMr2tIFRCu36SkN3n2uUNtj&location=${lat}%2C${long}&outFormat=json&thumbMaps=false`)
       .then((response) => {
         this.setState({ location: response.data.results[0].locations[0].adminArea5 });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+	fetchWeatherData = (lat, long) => {
+    axios.get(`/forecast/4661e7b286a3ea7974d722fcf62b5ea9/${lat},${long}`)
+      .then((response) => {
+        this.setState({ weatherData: response.data });
+      })
+      .catch((error) => {
+        console.log(error);
       });
   }
   render() {
@@ -35,13 +56,13 @@ class App extends React.Component {
             <span className="text-6xl">{ this.state.weatherData ? this.state.weatherData.currently.temperature.toFixed() + '°' : '...'}</span>
             <div className="px-16">
               <span className="text-6xl">{ this.state.location ? this.state.location : '...' }</span>
-              <span className="block pl-1 text-2xl">{ moment().format('h:mm a - MMM Do YYYY') }</span>
+              <span className="block pt-2 pl-1 text-2xl">{ moment().format('h:mm a - MMM Do YYYY') }</span>
             </div>
             <span className="self-center text-2xl">{ this.state.weatherData ? this.state.weatherData.currently.summary : '...' }</span>
           </div>
         </section>
         <section className="w-1/3 h-full">
-          <Sidebar weatherData={ this.state.weatherData } location={ this.state.location } />
+          <Sidebar weatherData={ this.state.weatherData } location={ this.state.location } changeLocation={ this.changeLocation } />
         </section>
       </div>
     );
