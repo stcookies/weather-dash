@@ -1,35 +1,32 @@
 import React from 'react';
 import axios from 'axios';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import Sidebar from './components/Sidebar';
+import WeatherIcon from './components/WeatherIcon';
 
 class App extends React.Component {
 	constructor() {
 		super();
 		this.state = {
       weatherData: null,
-      location: ''
+      location: '',
+      timezone: null
 		}
   }
   componentDidMount() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => { 
         this.fetchWeatherData(position.coords.latitude, position.coords.longitude);
-        this.fetchLocationData(position.coords.latitude, position.coords.longitude);
+        this.reverseGeocode(position.coords.latitude, position.coords.longitude);
       }, (error) => { 
         console.log(error) 
       });
     }
   }
   changeLocation = (loc) => {
-    axios.get(`https://www.mapquestapi.com/geocoding/v1/address?key=iGU4SqMrHyMr2tIFRCu36SkN3n2uUNtj&inFormat=kvp&outFormat=json&location=${loc}&thumbMaps=false`)
-      .then((response) => {
-        this.setState({ location: response.data.results[0].locations[0].adminArea5 });
-        let latLng = response.data.results[0].locations[0].latLng;
-        this.fetchWeatherData(latLng.lat, latLng.lng);
-      });
+    this.setState({ location: loc });
   }
-  fetchLocationData = (lat, long) => {
+  reverseGeocode = (lat, long) => {
     axios.get(`https://www.mapquestapi.com/geocoding/v1/reverse?key=iGU4SqMrHyMr2tIFRCu36SkN3n2uUNtj&location=${lat}%2C${long}&outFormat=json&thumbMaps=false`)
       .then((response) => {
         this.setState({ location: response.data.results[0].locations[0].adminArea5 });
@@ -49,20 +46,26 @@ class App extends React.Component {
   }
   render() {
     return (
-      <div className="flex h-screen bg-center bg-cover" style={{ backgroundImage:`url("https://images.unsplash.com/photo-1468608374703-abdfab03d1bc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2550&q=100")` }}>
+      <div className="flex h-screen bg-center bg-cover" style={{ backgroundImage:`url("https://images.unsplash.com/photo-1501612272219-9f77e47daef5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2550&q=80")` }}>
         <section className="flex flex-col justify-between w-2/3 h-full px-24 pt-16 pb-24">
           <span className="text-2xl font-semibold tracking-wider text-white">weather.app</span>
-          <div className="flex font-semibold leading-none text-white">
+          <div className="flex items-center font-semibold leading-none text-white">
             <span className="text-6xl">{ this.state.weatherData ? this.state.weatherData.currently.temperature.toFixed() + '°' : '...'}</span>
             <div className="px-16">
               <span className="text-6xl">{ this.state.location ? this.state.location : '...' }</span>
-              <span className="block pt-2 pl-1 text-2xl">{ moment().format('h:mm a - MMM Do YYYY') }</span>
+              { this.state.weatherData ? 
+                <span className="block pt-3 pl-1 text-2xl">{ moment().tz(this.state.weatherData.timezone).format('h:mm a / ddd, MMM Do YYYY') }</span> :
+                <span className="block pt-3 pl-1 text-2xl">{ moment().format('h:mm a / ddd MMM Do YYYY') }</span>
+              }
             </div>
-            <span className="self-center text-2xl">{ this.state.weatherData ? this.state.weatherData.currently.summary : '...' }</span>
+            <div className="flex items-center">
+              { this.state.weatherData ? <WeatherIcon className="h-32 text-white fill-current" icon={ this.state.weatherData.currently.icon } /> : null }
+              <span className="text-2xl leading-none">{ this.state.weatherData ? this.state.weatherData.currently.summary : '...' }</span>
+            </div>
           </div>
         </section>
         <section className="w-1/3 h-full">
-          <Sidebar weatherData={ this.state.weatherData } location={ this.state.location } changeLocation={ this.changeLocation } />
+          <Sidebar weatherData={ this.state.weatherData } location={ this.state.location } changeLocation={ this.changeLocation } fetchWeatherData={ this.fetchWeatherData } />
         </section>
       </div>
     );

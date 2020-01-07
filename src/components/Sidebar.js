@@ -1,4 +1,6 @@
 import React from 'react';
+import axios from 'axios';
+import ForecastTile from './ForecastTile';
 
 class Sidebar extends React.Component {
 	constructor(props) {
@@ -7,11 +9,19 @@ class Sidebar extends React.Component {
 			location: ''
 		}
 	}
-	componentWillReceiveProps(newProps) {
-		this.setState({ location: newProps.location });
-	}
 	changeLocation = (e) => {
 		this.setState({ location: e.target.value });
+	}
+	geocode = () => {
+		if (this.state.location === '') { return; }
+    axios.get(`https://www.mapquestapi.com/geocoding/v1/address?key=iGU4SqMrHyMr2tIFRCu36SkN3n2uUNtj&inFormat=kvp&outFormat=json&location=${this.state.location}&thumbMaps=false`)
+      .then((response) => {
+				const newLoc = response.data.results[0].locations[0].adminArea5;
+        this.setState({ location: newLoc });
+        let latLng = response.data.results[0].locations[0].latLng;
+				this.props.fetchWeatherData(latLng.lat, latLng.lng);
+				this.props.changeLocation(newLoc)
+      });
 	}
 	render() {
 		return (
@@ -22,34 +32,35 @@ class Sidebar extends React.Component {
 					<svg className="w-8 h-8 text-white fill-current"><path d="M16.32 14.9l5.39 5.4a1 1 0 01-1.42 1.4l-5.38-5.38a8 8 0 111.41-1.41zM10 16a6 6 0 100-12 6 6 0 000 12z" /></svg>
 				</div>
 			</div>
-			<span onClick={ () => this.props.changeLocation(this.state.location) } className="block pt-8 pb-3 text-3xl font-semibold text-white">Today</span>
+			<span onClick={ () => this.geocode() } className="block pt-12 text-3xl font-semibold text-white">Today</span>
 			<div>
-				<div className="flex justify-between">
-					<span className="block pt-8 text-lg text-white">Description</span>
-					<span className="block pt-8 text-lg text-white">{ this.props.weatherData ? this.props.weatherData.daily.data[0].summary : '...' }</span>
+				<div className="flex justify-between pt-10">
+					<span className="block text-lg text-white">Description</span>
+					<span className="block text-lg text-white">{ this.props.weatherData ? this.props.weatherData.daily.data[0].summary : '...' }</span>
 				</div>
-				<div className="flex justify-between">
-					<span className="block pt-12 text-lg text-white">Precipitation</span>
-					<span className="block pt-12 text-lg text-white">{ this.props.weatherData ? this.props.weatherData.daily.data[0].precipProbability + '%' : '...' }</span>
+				<div className="flex justify-between pt-10">
+					<span className="block text-lg text-white">Precipitation</span>
+					<span className="block text-lg text-white">{ this.props.weatherData ? this.props.weatherData.daily.data[0].precipProbability + '%' : '...' }</span>
 				</div>
-				<div className="flex justify-between">
-					<span className="block pt-12 text-lg text-white">Humidity</span>
-					<span className="block pt-12 text-lg text-white">{ this.props.weatherData ? this.props.weatherData.daily.data[0].humidity : '...' }</span>
+				<div className="flex justify-between pt-10">
+					<span className="block text-lg text-white">Humidity</span>
+					<span className="block text-lg text-white">{ this.props.weatherData ? this.props.weatherData.daily.data[0].humidity : '...' }</span>
 				</div>
-				<div className="flex justify-between">
-					<span className="block pt-12 text-lg text-white">High / Low</span>
-					<span className="block pt-12 text-lg text-white">{ this.props.weatherData ? this.props.weatherData.daily.data[0].temperatureHigh.toFixed() + '° / ' + this.props.weatherData.daily.data[0].temperatureLow.toFixed() + '°'  : '...' }</span>
+				<div className="flex justify-between pt-10">
+					<span className="block text-lg text-white">High / Low</span>
+					<span className="block text-lg text-white">{ this.props.weatherData ? this.props.weatherData.daily.data[0].temperatureHigh.toFixed() + '° / ' + this.props.weatherData.daily.data[0].temperatureLow.toFixed() + '°'  : '...' }</span>
 				</div>
-				<div className="flex justify-between">
-					<span className="block pt-12 text-lg text-white">Wind</span>
-					<span className="block pt-12 text-lg text-white">{ this.props.weatherData ? this.props.weatherData.daily.data[0].windSpeed.toFixed() + ' mph' : '...' }</span>
+				<div className="flex justify-between pt-10">
+					<span className="block text-lg text-white">Wind</span>
+					<span className="block text-lg text-white">{ this.props.weatherData ? this.props.weatherData.daily.data[0].windSpeed.toFixed() + ' mph' : '...' }</span>
 				</div>
 			</div>
 			<div className="py-12">
 				<span className="block pb-3 text-3xl font-semibold text-white">7 Day</span>
 				<div className="h-48 bg-gray-700 rounded">
-
+					{ this.props.weatherData ? <ForecastTile weatherData={ this.props.weatherData.daily.data[0] } /> : null }
 				</div>
+
 				<div className="flex pt-5">
 					<div className="w-1/3 h-48 bg-gray-700 rounded"></div>
 					<div className="w-1/3 h-48 mx-4 bg-gray-700 rounded"></div>
@@ -60,6 +71,7 @@ class Sidebar extends React.Component {
 					<div className="w-1/3 h-48 mx-4 bg-gray-700 rounded"></div>
 					<div className="w-1/3 h-48 bg-gray-700 rounded"></div>
 				</div>
+
 			</div>
 		</div>
 		)
