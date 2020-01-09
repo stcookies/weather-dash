@@ -9,8 +9,7 @@ class App extends React.Component {
 		super();
 		this.state = {
       weatherData: null,
-      location: '',
-      timezone: null
+      location: ''
 		}
   }
   componentDidMount() {
@@ -59,8 +58,8 @@ class App extends React.Component {
               }
             </div>
             <div className="flex items-center">
-              { this.state.weatherData ? <WeatherIcon className="h-32 text-white fill-current" icon={ this.state.weatherData.currently.icon } /> : null }
-              <span className="text-2xl leading-none">{ this.state.weatherData ? this.state.weatherData.currently.summary : '...' }</span>
+              { this.state.weatherData ? <WeatherIcon className="h-12 text-white fill-current" icon={ this.state.weatherData.currently.icon } /> : null }
+              <span className="pl-6 text-2xl leading-none">{ this.state.weatherData ? this.state.weatherData.currently.summary : '...' }</span>
             </div>
           </div>
         </section>

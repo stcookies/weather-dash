@@ -57,16 +57,16 @@ class Sidebar extends React.Component {
 			</div>
 			<div className="py-12">
 				<span className="block text-3xl font-semibold text-white">7 Day</span>
-				<div className="h-48 mt-10 bg-gray-700 rounded shadow-xl">
-					{ this.props.weatherData ? <ForecastTile weatherData={ this.props.weatherData.daily.data[1] } /> : null }
+				<div className="mt-10 bg-gray-700 rounded shadow-xl">
+					{ this.props.weatherData ? <ForecastTile timezone={ this.props.weatherData.timezone } daysAway={ 1 } weatherData={ this.props.weatherData.daily.data[1] } /> : null }
 				</div>
 
 				<div className="flex flex-wrap pt-2 -mx-2">
 					{
 						this.props.weatherData ? this.props.weatherData.daily.data.slice(2).map((day, index) => {
-							return <div className="w-1/3 px-2 pt-4 rounded">
-								<div className="h-48 bg-gray-700 rounded shadow-lg">
-									{ index }
+							return <div className="w-1/3 px-2 pt-4 rounded" key={ index }>
+								<div className="bg-gray-700 rounded shadow-lg">
+									<ForecastTile timezone={ this.props.weatherData.timezone } daysAway={ index + 2 } weatherData={ day } />
 								</div>
 						</div>
 						}) : null
