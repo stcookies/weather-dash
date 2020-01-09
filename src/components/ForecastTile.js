@@ -6,15 +6,16 @@ class ForecastTile extends React.Component {
   render() {
     return (
       <div className="p-8">
-        <div className="flex justify-between pb-5">
-          { this.props.daysAway === 1 ? <span className="text-2xl font-semibold text-white">Tomorrow</span> : null }
+        <div className="flex flex-wrap justify-between pb-5">
+          { this.props.daysAway === 1 ? <span className="text-xl font-semibold text-white">Tomorrow</span> : null }
           <span className="text-xl font-semibold text-white">{ moment().tz(this.props.timezone).add(this.props.daysAway, 'day').format('dddd MMMM D, YYYY')}</span>
         </div>
         <div className="flex items-center">
-          <div className="w-3/4">
-            <span className="text-xl font-semibold text-white">{ this.props.weatherData.summary }</span>
+          <div className="flex items-center w-full xl:w-3/4">
+            <WeatherIcon icon={ this.props.weatherData.icon } className="h-16 text-white fill-current" />
+            <span className="block px-8 text-xl font-semibold text-white">{ this.props.weatherData.summary }</span>
           </div>
-          <div className="w-1/4">
+          <div className="w-full xl:w-1/4">
             <div className="flex justify-between">
               <span className="text-xl font-thin text-center text-white uppercase">High</span>
               <span className="text-xl font-thin text-center text-white uppercase">Low</span>
