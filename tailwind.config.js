@@ -1,6 +1,9 @@
 module.exports = {
   theme: {
-    extend: {}
+    extend: {
+      width: {
+      }
+    }
   },
   variants: {},
   plugins: []

@@ -20,12 +20,11 @@ class Sidebar extends React.Component {
 		this.setState({ location: e.target.value });
 	}
 	geocode = (searchAheadLoc) => {
-		if (this.state.location === '') { return; }
-    axios.get(`https://www.mapquestapi.com/geocoding/v1/address?key=iGU4SqMrHyMr2tIFRCu36SkN3n2uUNtj&inFormat=kvp&outFormat=json&location=${searchAheadLoc || this.state.location}&thumbMaps=false`)
+    axios.get(`https://www.mapquestapi.com/geocoding/v1/address?key=iGU4SqMrHyMr2tIFRCu36SkN3n2uUNtj&inFormat=kvp&outFormat=json&location=${searchAheadLoc}&thumbMaps=false`)
       .then((response) => {
 				const newLoc = response.data.results[0].locations[0].adminArea5;
-        this.setState({ location: newLoc, searchAheadResults: [] });
-        let latLng = response.data.results[0].locations[0].latLng;
+				let latLng = response.data.results[0].locations[0].latLng;
+				this.setState({ location: newLoc, searchAheadResults: [] });
 				this.props.fetchWeatherData(latLng.lat, latLng.lng);
 				this.props.changeLocation(newLoc)
       });
@@ -38,8 +37,8 @@ class Sidebar extends React.Component {
 	}
 	render() {
 		return (
-		<div className="flex justify-center h-full px-4 pt-16 overflow-y-scroll lg:px-3 xl:px-16" style={{ backgroundColor: 'rgba(26, 32, 44, 0.75)' }}>
-			<div className="max-w-6xl">
+		<div className="flex justify-center h-full px-10 pt-16 overflow-y-scroll" style={{ backgroundColor: 'rgba(26, 32, 44, 0.75)' }}>
+			<div>
 				<div className="relative flex items-center pb-2 border-b border-b-2 border-gray-500">
 					<input className="z-10 w-full py-1 pl-8 mr-3 text-lg leading-tight text-white bg-transparent border-none appearance-none focus:outline-none" value={ this.state.location } onChange={ this.changeLocation } type="text" placeholder="Location" aria-label="Location" />
 					<div className="absolute inset-0 flex items-center">
@@ -48,13 +47,13 @@ class Sidebar extends React.Component {
 				</div>
 				{ this.state.searchAheadResults.length > 0 ?
 				<div className="relative">
-					<div className="absolute w-full overflow-hidden bg-white rounded-b-lg">
+					<ul className="absolute w-full overflow-hidden bg-white rounded-b-lg shadow-xl">
 						{
 							this.state.searchAheadResults.map((location, index) => {
-								return <span onClick={ () => this.geocode(location.displayString) } key={index} className="block px-5 py-3 cursor-pointer hover:bg-gray-300">{ location.displayString }</span>
+								return <li onClick={ () => this.geocode(location.displayString) } key={index} className="block px-5 py-3 cursor-pointer hover:bg-gray-300">{ location.displayString }</li>
 							})
 						}
-					</div>
+					</ul>
 				</div>
 				: null
 				} 
