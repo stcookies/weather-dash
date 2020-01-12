@@ -42,7 +42,7 @@ class App extends React.Component {
     }
   }
   reverseGeocode = (lat, long) => {
-    axios.get(`https://www.mapquestapi.com/geocoding/v1/reverse?key=iGU4SqMrHyMr2tIFRCu36SkN3n2uUNtj&location=${lat}%2C${long}&outFormat=json&thumbMaps=false`)
+    axios.get(`/.netlify/functions/reverse_geocode?lat=${lat}&long=${long}`, { responseType: 'text' })
       .then((response) => {
         this.setState({ location: response.data.results[0].locations[0].adminArea5 });
       })
@@ -51,21 +51,13 @@ class App extends React.Component {
       });
   }
 	fetchWeatherData = (lat, long) => {
-    fetch(`/.netlify/functions/forecast?lat=${lat}&long=${long}`)
+    axios.get(`/.netlify/functions/forecast?lat=${lat}&long=${long}`, { responseType: 'text' })
       .then((response) => {
-        console.log(response);
-        return response.json();
-      })
-      /*
-    axios.get(`/.netlify/functions/forecast/${lat},${long}`)
-      .then((response) => {
-        console.log(response);
         this.setState({ weatherData: response.data });
       })
       .catch((error) => {
         console.log(error);
       });
-      */
   }
   render() {
     return (

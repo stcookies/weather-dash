@@ -15,15 +15,15 @@ class Sidebar extends React.Component {
 	}
 	changeLocation = (e) => {
 		if (e.target.value.length % 2 !== 0 && e.target.value.length > 2) {
-			this.searchAhead();
+			this.searchAhead(e.target.value);
 		}
 		if (e.target.value.length < 3) {
 			this.setState({ searchAheadResults: [] });
 		}
 		this.setState({ location: e.target.value });
 	}
-	geocode = (searchAheadLoc) => {
-    axios.get(`https://www.mapquestapi.com/geocoding/v1/address?key=iGU4SqMrHyMr2tIFRCu36SkN3n2uUNtj&inFormat=kvp&outFormat=json&location=${searchAheadLoc}&thumbMaps=false`)
+	geolocate = (searchAheadLoc) => {
+    axios.get(`/.netlify/functions/geolocate?location=${searchAheadLoc}`, { responseType: 'text' })
       .then((response) => {
 				const newLoc = response.data.results[0].locations[0].adminArea5;
 				let latLng = response.data.results[0].locations[0].latLng;
@@ -32,11 +32,11 @@ class Sidebar extends React.Component {
 				this.props.changeLocation(newLoc)
       });
 	}
-	searchAhead = () => {
-		axios.get(`http://www.mapquestapi.com/search/v3/prediction?key=${process.env.REACT_APP_MAPQUEST_KEY}&q=${ this.state.location }&collection=adminArea&limit=5`)
+	searchAhead = (location) => {
+		axios.get(`/.netlify/functions/search_ahead?location=${location}`, { responseType: 'text' })
 			.then((response) => {
 				this.setState({ searchAheadResults: response.data.results })
-			})
+			});
 	}
 	render() {
 		return (
@@ -53,7 +53,7 @@ class Sidebar extends React.Component {
 					<ul className="absolute w-full overflow-hidden bg-white rounded-b-lg shadow-xl">
 						{
 							this.state.searchAheadResults.map((location, index) => {
-								return <li onClick={ () => this.geocode(location.displayString) } key={index} className="block px-5 py-3 cursor-pointer hover:bg-gray-300">{ location.displayString }</li>
+								return <li onClick={ () => this.geolocate(location.displayString) } key={index} className="block px-5 py-3 cursor-pointer hover:bg-gray-300">{ location.displayString }</li>
 							})
 						}
 					</ul>

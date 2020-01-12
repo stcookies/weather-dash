@@ -10,6 +10,9 @@ exports.handler = (event, context, callback) => {
       }
     })
     .catch((error) => {
-      callback(error);
+      return {
+        statusCode: error.response.status,
+        body: error.response.statusText
+      }
     });
 }
