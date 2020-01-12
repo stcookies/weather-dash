@@ -1,7 +1,7 @@
 const axios = require('axios');
 
 exports.handler = (event, context, callback) => {
-  const { lat, long} = event.queryStringParameters;
+  const { lat, long } = event.queryStringParameters;
   return axios.get(`https://api.darksky.net/forecast/${process.env.REACT_APP_DARKSKY_KEY}/${lat},${long}`)
     .then((response) => {
       return {

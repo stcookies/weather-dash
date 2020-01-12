@@ -71,7 +71,7 @@ class App extends React.Component {
     return (
       <div className="h-screen bg-center bg-cover" style={{ backgroundImage:`url("https://images.unsplash.com/photo-1501612272219-9f77e47daef5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2550&q=80")` }}>
         <section className="flex flex-col justify-between h-full px-24 pt-16 pb-24">
-          <div>
+          <div className="flex items-center">
             <span className="text-2xl font-semibold tracking-wider text-white">weather.app</span>
             <div className="relative w-1/6 mt-5">
               <div className="absolute inset-y-0 left-0 flex items-center pl-4">
