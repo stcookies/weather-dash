@@ -51,13 +51,21 @@ class App extends React.Component {
       });
   }
 	fetchWeatherData = (lat, long) => {
-    axios.get(`/forecast/4661e7b286a3ea7974d722fcf62b5ea9/${lat},${long}`)
+    fetch(`/.netlify/functions/forecast?lat=${lat}&long=${long}`)
       .then((response) => {
+        console.log(response);
+        return response.json();
+      })
+      /*
+    axios.get(`/.netlify/functions/forecast/${lat},${long}`)
+      .then((response) => {
+        console.log(response);
         this.setState({ weatherData: response.data });
       })
       .catch((error) => {
         console.log(error);
       });
+      */
   }
   render() {
     return (
@@ -75,9 +83,9 @@ class App extends React.Component {
                   <path fill="#ea4335" d="M272.1 107.7c38.8-.6 76.3 14 104.4 40.8l77.7-77.7C405 24.6 339.7-.8 272.1 0 169.2 0 75.1 58 28.9 150l90.4 70.1c21.5-64.5 81.8-112.4 152.8-112.4z"/>
                 </svg>
               </div>
-              <input onKeyPress={ this.searchGoogle } onChange={ this.changeQuery } className="block w-full px-12 py-2 text-gray-900 bg-white rounded-full focus:shadow-outline" placeholder="Search with Google" />
+              <input onKeyPress={ this.searchGoogle } onChange={ this.changeQuery } className="block w-full px-12 py-2 text-gray-900 placeholder-gray-900 bg-white rounded-full focus:shadow-outline" placeholder="Search with Google" />
               <div className="absolute inset-y-0 right-0 flex items-center pr-4">
-                <svg onClick={ () => this.searchGoogle(null, true) } className="w-5 h-5 text-gray-600 cursor-pointer fill-current" viewBox="0 0 24 24">
+                <svg onClick={ () => this.searchGoogle(null, true) } className="w-5 h-5 text-gray-700 cursor-pointer fill-current" viewBox="0 0 24 24">
                   <defs/>
                   <path d="M18.59 13H3a1 1 0 010-2h15.59l-5.3-5.3a1 1 0 111.42-1.4l7 7a1 1 0 010 1.4l-7 7a1 1 0 01-1.42-1.4l5.3-5.3z" className="heroicon-ui"/>
                 </svg>

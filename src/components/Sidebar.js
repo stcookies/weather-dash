@@ -10,6 +10,9 @@ class Sidebar extends React.Component {
 			searchAheadResults: []
 		}
 	}
+	bgImage = {
+
+	}
 	changeLocation = (e) => {
 		if (e.target.value.length % 2 !== 0 && e.target.value.length > 2) {
 			this.searchAhead();
@@ -30,7 +33,7 @@ class Sidebar extends React.Component {
       });
 	}
 	searchAhead = () => {
-		axios.get(`http://www.mapquestapi.com/search/v3/prediction?key=iGU4SqMrHyMr2tIFRCu36SkN3n2uUNtj&q=${ this.state.location }&collection=adminArea&limit=5`)
+		axios.get(`http://www.mapquestapi.com/search/v3/prediction?key=${process.env.REACT_APP_MAPQUEST_KEY}&q=${ this.state.location }&collection=adminArea&limit=5`)
 			.then((response) => {
 				this.setState({ searchAheadResults: response.data.results })
 			})
