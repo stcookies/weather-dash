@@ -14,10 +14,11 @@ class Sidebar extends React.Component {
 
 	}
 	changeLocation = (e) => {
-		if (e.target.value.length % 2 !== 0 && e.target.value.length > 2) {
-			this.searchAhead(e.target.value);
+		let searchTerm = e.target.value.trim();
+		if (searchTerm.length % 2 !== 0 && searchTerm.length > 2 && searchTerm !== this.state.location.trim()) {
+			this.searchAhead(searchTerm);
 		}
-		if (e.target.value.length < 3) {
+		if (searchTerm.length < 3) {
 			this.setState({ searchAheadResults: [] });
 		}
 		this.setState({ location: e.target.value });
@@ -28,8 +29,7 @@ class Sidebar extends React.Component {
 				const newLoc = response.data.results[0].locations[0].adminArea5;
 				let latLng = response.data.results[0].locations[0].latLng;
 				this.setState({ location: newLoc, searchAheadResults: [] });
-				this.props.fetchWeatherData(latLng.lat, latLng.lng);
-				this.props.changeLocation(newLoc)
+				this.props.fetchWeatherData(latLng.lat, latLng.lng, newLoc);
       });
 	}
 	searchAhead = (location) => {

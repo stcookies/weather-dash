@@ -50,10 +50,13 @@ class App extends React.Component {
         console.log(error);
       });
   }
-	fetchWeatherData = (lat, long) => {
+	fetchWeatherData = (lat, long, loc) => {
     axios.get(`/.netlify/functions/forecast?lat=${lat}&long=${long}`, { responseType: 'text' })
       .then((response) => {
         this.setState({ weatherData: response.data });
+        if (loc) {
+          this.setState({ location: loc });
+        }
       })
       .catch((error) => {
         console.log(error);
@@ -65,7 +68,7 @@ class App extends React.Component {
         <section className="flex flex-col justify-between h-full px-24 pt-16 pb-24">
           <div className="flex items-center">
             <span className="text-2xl font-semibold tracking-wider text-white">weather.app</span>
-            <div className="relative w-1/6 mt-5">
+            <div className="relative w-1/6 mx-10 mt-1">
               <div className="absolute inset-y-0 left-0 flex items-center pl-4">
                 <svg className="w-5 h-5" viewBox="0 0 533.5 544.3">
                   <defs/>
@@ -100,7 +103,7 @@ class App extends React.Component {
           </div>
         </section>
         <section className="absolute top-0 right-0 h-full shadow-xl" style={{ width: '735px' }}>
-          <Sidebar weatherData={ this.state.weatherData } location={ this.state.location } changeLocation={ this.changeLocation } fetchWeatherData={ this.fetchWeatherData } />
+          <Sidebar weatherData={ this.state.weatherData } location={ this.state.location } fetchWeatherData={ this.fetchWeatherData } />
         </section>
       </div>
     );
