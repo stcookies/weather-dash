@@ -2,7 +2,7 @@ const axios = require('axios');
 
 exports.handler = (event, context, callback) => {
   const { location } = event.queryStringParameters;
-  return axios.get(`http://www.mapquestapi.com/search/v3/prediction?key=${process.env.REACT_APP_MAPQUEST_KEY}&q=${location}&collection=adminArea&limit=5`)
+  return axios.get(`http://www.mapquestapi.com/search/v3/prediction?key=${process.env.REACT_APP_MAPQUEST_KEY}&q=${location}&collection=adminArea&limit=5&countryCode=us,ca,au`)
     .then((response) => {
       return {
         statusCode: 200,

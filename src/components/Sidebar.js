@@ -10,9 +10,6 @@ class Sidebar extends React.Component {
 			searchAheadResults: []
 		}
 	}
-	bgImage = {
-
-	}
 	changeLocation = (e) => {
 		let searchTerm = e.target.value.trim();
 		if (searchTerm.length % 2 !== 0 && searchTerm.length > 2 && searchTerm !== this.state.location.trim()) {
