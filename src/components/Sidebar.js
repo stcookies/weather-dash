@@ -38,7 +38,7 @@ class Sidebar extends React.Component {
 	render() {
 		return (
 		<div className="flex justify-center h-full px-10 pt-16 overflow-y-scroll" style={{ backgroundColor: 'rgba(26, 32, 44, 0.75)' }}>
-			<div>
+			<div className="w-full">
 				<div className="relative flex items-center pb-2 border-b border-b-2 border-gray-500">
 					<input className="z-10 w-full py-1 pl-8 mr-3 text-lg leading-tight text-white bg-transparent border-none appearance-none focus:outline-none" value={ this.state.location } onChange={ this.changeLocation } type="text" placeholder="Location" aria-label="Location" />
 					<div className="absolute inset-0 flex items-center">
@@ -82,10 +82,9 @@ class Sidebar extends React.Component {
 				</div>
 				<div className="py-12">
 					<span className="block text-3xl font-semibold text-white">7 Day</span>
-					<div className="mt-10 bg-gray-700 rounded shadow-xl">
+					<div className="mt-10 bg-gray-700 rounded shadow-xl h-forecast-tomorrow-card">
 						{ this.props.weatherData ? <ForecastTile timezone={ this.props.weatherData.timezone } daysAway={ 1 } weatherData={ this.props.weatherData.daily.data[1] } /> : null }
 					</div>
-
 					<div className="flex flex-wrap pt-2 -mx-2">
 						{
 							this.props.weatherData ? this.props.weatherData.daily.data.slice(2).map((day, index) => {
@@ -94,11 +93,15 @@ class Sidebar extends React.Component {
 										<ForecastTile timezone={ this.props.weatherData.timezone } daysAway={ index + 2 } weatherData={ day } />
 									</div>
 							</div>
-							}) : null
+							}) :
+							[...Array(6)].map((x, index) => {
+								return <div className="w-1/3 px-2 pt-4 rounded" key={ index }>
+									<div className="bg-gray-700 rounded shadow-lg h-forecast-card"></div>
+								</div>
+							})
 						}
 					</div>
 				</div>
-
 			</div>
 		</div>
 		)

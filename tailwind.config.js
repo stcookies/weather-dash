@@ -4,6 +4,10 @@ module.exports = {
       width: {
         'sidebar': '735px',
         'search': '25rem'
+      },
+      height: {
+        'forecast-tomorrow-card': '258px',
+        'forecast-card': '263px' 
       }
     },
     screens: {

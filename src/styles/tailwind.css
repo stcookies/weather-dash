@@ -3845,6 +3845,14 @@ video {
   height: 100vh;
 }
 
+.h-forecast-tomorrow-card {
+  height: 258px;
+}
+
+.h-forecast-card {
+  height: 263px;
+}
+
 .leading-none {
   line-height: 1;
 }
@@ -14612,6 +14620,14 @@ video {
 
   .compact\:h-screen {
     height: 100vh;
+  }
+
+  .compact\:h-forecast-tomorrow-card {
+    height: 258px;
+  }
+
+  .compact\:h-forecast-card {
+    height: 263px;
   }
 
   .compact\:leading-none {
@@ -25382,6 +25398,14 @@ video {
 
   .wide\:h-screen {
     height: 100vh;
+  }
+
+  .wide\:h-forecast-tomorrow-card {
+    height: 258px;
+  }
+
+  .wide\:h-forecast-card {
+    height: 263px;
   }
 
   .wide\:leading-none {
