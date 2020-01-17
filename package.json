@@ -18,13 +18,13 @@
     "tailwindcss": "^1.1.4"
   },
   "scripts": {
-    "build:style": "tailwind build src/styles/index.css -o src/styles/tailwind.css",
-    "start": "npm run build:style && react-scripts start && npm run start:functions",
+    "start": "npm run build:style && react-scripts start",
     "build": "npm run build:style && react-scripts build && npm run build:lambda",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
+    "build:style": "tailwind build src/styles/index.css -o src/styles/tailwind.css",
     "start:functions": "netlify-lambda serve ./functions --config ./webpack.functions.js",
-    "build:lambda": "netlify-lambda build ./functions --config ./webpack.functions.js"
+    "build:lambda": "netlify-lambda build ./functions"
   },
   "eslintConfig": {
     "extends": "react-app"
