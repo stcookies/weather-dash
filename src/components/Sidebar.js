@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import ForecastTile from './ForecastTile';
+import DarkSkyLogo from '../assets/img/darksky.png';
 
 class Sidebar extends React.Component {
 	constructor(props) {
@@ -101,6 +102,9 @@ class Sidebar extends React.Component {
 							})
 						}
 					</div>
+				</div>
+				<div className="flex justify-center">
+						<a target="_blank" rel="noopener noreferrer" href="https://darksky.net"><img className="h-12" src={ DarkSkyLogo } alt="DarkSky Logo" /></a>
 				</div>
 			</div>
 		</div>
