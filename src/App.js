@@ -3,7 +3,7 @@ import axios from 'axios';
 import moment from 'moment-timezone';
 import Sidebar from './components/Sidebar';
 import WeatherIcon from './components/WeatherIcon';
-import Logo from './assets/img/logo.png';
+import Logo from './assets/img/logo-white.png';
 
 class App extends React.Component {
 	constructor() {
@@ -77,7 +77,7 @@ class App extends React.Component {
     return (
       <div className="h-screen bg-gray-700 bg-center bg-cover" style={{ backgroundImage:`url(${this.state.bgImg})` }}>
         <section className="flex flex-col justify-between h-full px-24 pt-16 pb-24">
-          <div className="flex wide:items-center compact:flex-col wide:flex-row">
+          <div className="flex wide:items-center compact:block wide:flex-row">
             <img className="h-8" src={ Logo } alt="Weather Dash Logo" />
             <div className="relative wide:mx-10 wide:mt-1 compact:mt-4 w-search">
               <div className="absolute inset-y-0 left-0 flex items-center pl-4">
